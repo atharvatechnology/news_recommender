@@ -1,0 +1,4 @@
+author: Shovan
+model_type: scikit-learn_0.23
+project_name: news_recommender
+project_version: v0.1
