@@ -1,2 +1,4 @@
+[core]
+    remote = aws-s3
 ['remote "aws-s3"']
     url = s3://news-recommender/dvc/
