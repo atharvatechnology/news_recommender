@@ -1,0 +1,20 @@
+schema: '2.0'
+stages:
+  preprocess:
+    cmd: python ./src/preprocess.py ./data/
+    deps:
+    - path: ./src/preprocess.py
+      md5: 06a2b4d40d47a7f7b041ff75d43683b9
+      size: 1854
+    - path: data/likes.csv
+      md5: 95521a8fa42baaefdd6ea723aef4cb0a
+      size: 516389
+    - path: data/news.csv
+      md5: bbce2c1260c713ea67148b782444f0a9
+      size: 448070
+    - path: data/ratings.csv
+      md5: 21e9cde37355a6128dd2eac26d264aa4
+      size: 722505
+    - path: data/users.csv
+      md5: 5029d7659c0a76ecaf652a357fd0b828
+      size: 175077
