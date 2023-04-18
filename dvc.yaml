@@ -1,0 +1,9 @@
+stages:
+  preprocess:
+    cmd: python ./src/preprocess.py ./data/
+    deps:
+    - ./src/preprocess.py
+    - data/likes.csv
+    - data/news.csv
+    - data/ratings.csv
+    - data/users.csv
