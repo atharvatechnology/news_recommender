@@ -8,13 +8,15 @@ def get_file_path(file_name):
     return path.join(DATA_PATH, file_name)
 
 
+def save_dataframe_to_csv(df, file_name):
+    df.to_csv(get_file_path(file_name), index=False)
+
+
 def preprocess_data():
     users_df = pd.read_csv(get_file_path("users.csv"))
     news_df = pd.read_csv(get_file_path("news.csv"))
     ratings_df = pd.read_csv(get_file_path("ratings.csv"))
     likes_df = pd.read_csv(get_file_path("likes.csv"))
-
-    print(news_df.head())
 
     # add an id column beginning from 0
     users_df["user_id"] = [i for i in range(users_df.shape[0])]
@@ -41,9 +43,15 @@ def preprocess_data():
         lambda x: users_df[users_df.User == x].index[0]
     )
 
+    # save the processed data into files
+    users_df.to_csv(get_file_path("users_processed.csv"), index=False)
+    news_df.to_csv(get_file_path("news_processed.csv"), index=False)
+    ratings_df.to_csv(get_file_path("ratings_processed.csv"), index=False)
+
 
 if __name__ == "__main__":
     print("Hello World!")
     DATA_PATH = path.abspath(sys.argv[1])
     # data_root = 'data/'
     preprocess_data()
+    print(f"Done! Data saved in {DATA_PATH}/<data>_processed.csv")
