@@ -43,6 +43,16 @@ def preprocess_data():
         lambda x: users_df[users_df.User == x].index[0]
     )
 
+    # Calculate rating of user
+    # TODO: Try different methods to calculate implicit rating
+    # currently, we use the number of likes and comments as the rating
+    # the weightage of like and comment is 1:1
+    # even if a user has multiple comments on a news, we only count it as 1
+    equal_weight_rating = lambda x: x.Like + (x.Comment + 1) / (x.Comment + 1)
+    ratings_df["rating"] = ratings_df[["Like", "Comment"]].apply(
+        equal_weight_rating, axis=1
+    )
+
     # save the processed data into files
     users_df.to_csv(get_file_path("users_processed.csv"), index=False)
     news_df.to_csv(get_file_path("news_processed.csv"), index=False)
