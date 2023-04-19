@@ -2,6 +2,22 @@ import torch
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
+# Utility to split the data into training and test sets.
+
+
+def split_dataframe(df, holdout_fraction=0.1):
+    """Splits a DataFrame into training and test sets.
+    Args:
+      df: a dataframe.
+      holdout_fraction: fraction of dataframe rows to use in the test set.
+    Returns:
+      train: dataframe for training
+      test: dataframe for testing
+    """
+    test = df.sample(frac=holdout_fraction, replace=False)
+    train = df[~df.index.isin(test.index)]
+    return train, test
+
 
 def build_rating_sparse_tensor(ratings_df, users_df, items_df):
     """
@@ -77,10 +93,10 @@ class CFModel(torch.nn.Module):
     def forward(self, sparse_ratings):
         predictions = torch.sum(
             torch.index_select(
-                input=model.U, dim=0, index=sparse_ratings.indices()[0, :]
+                input=self.U, dim=0, index=sparse_ratings.indices()[0, :]
             )
             * torch.index_select(
-                input=model.V, dim=0, index=sparse_ratings.indices()[1, :]
+                input=self.V, dim=0, index=sparse_ratings.indices()[1, :]
             ),
             dim=1,
         )
@@ -109,7 +125,25 @@ def train(model: torch.nn.Module, ratings_mat, optimizer):
     return loss
 
 
-def build_model(ratings, embedding_dim=3, init_stddev=1.0):
+def test(model: torch.nn.Module, rating_mat, optimizer):
+    """Test the model.
+    Args:
+      iterations: number of iterations to run.
+      learning_rate: optimizer learning rate.
+      plot_results: whether to plot the results at the end of training.
+      optimizer: the optimizer to use. Default to GradientDescentOptimizer.
+    Returns:
+      The metrics dictionary evaluated at the last iteration.
+    """
+    model.eval()
+    with torch.no_grad():
+        pred = model.forward(rating_mat)
+        # print(pred.shape)
+        loss = sparse_mean_square_error(rating_mat.values(), pred)
+    return loss
+
+
+def build_model(ratings, users_df, news_df, embedding_dim=3, init_stddev=1.0):
     """
     Args:
       ratings: a DataFrame of the ratings
@@ -121,8 +155,8 @@ def build_model(ratings, embedding_dim=3, init_stddev=1.0):
     # Split the ratings DataFrame into train and test.
     train_ratings, test_ratings = split_dataframe(ratings)
     # SparseTensor representation of the train and test datasets.
-    A_train = build_rating_sparse_tensor(train_ratings, users, movies)
-    A_test = build_rating_sparse_tensor(test_ratings, users, movies)
+    A_train = build_rating_sparse_tensor(train_ratings, users_df, news_df)
+    A_test = build_rating_sparse_tensor(test_ratings, users_df, news_df)
 
     # metrics = {
     #     'train_error': train_loss,
@@ -139,6 +173,19 @@ def build_model(ratings, embedding_dim=3, init_stddev=1.0):
         A_train,
         A_test,
     )
+
+
+def gravity(U, V):
+    """Creates a gravity loss given two embedding matrices."""
+    return (
+        1.0
+        / (U.shape[0] * V.shape[0])
+        * torch.sum(torch.matmul(U.T, U) * torch.matmul(V.T, V))
+    )
+
+
+def get_square_norm(X):
+    return (1.0 / X.shape[0]) * torch.sum(X * X)
 
 
 def gravity(U, V):
