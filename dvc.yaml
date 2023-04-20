@@ -7,3 +7,16 @@ stages:
     - data/news.csv
     - data/ratings.csv
     - data/users.csv
+  train:
+    cmd: python ./src/train.py ./data/
+    deps:
+    - ./data/news_processed.csv
+    - ./data/ratings_processed.csv
+    - ./data/users_processed.csv
+    - ./src/model.py
+    - ./src/train.py
+    outs:
+    - ./data/embeddings.pt
+    - ./data/losses.png
+    - ./data/test_losses.csv
+    - ./data/train_losses.csv
