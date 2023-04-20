@@ -1,5 +1,5 @@
 name: model-training-evaluate
-on: [push]
+# on: [push]
 jobs:
   run:
     runs-on: [ubuntu-latest]
