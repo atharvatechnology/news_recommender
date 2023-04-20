@@ -7,3 +7,7 @@
 /news_processed.csv
 /ratings_processed.csv
 /users_processed.csv
+/train_losses.csv
+/test_losses.csv
+/losses.png
+/embeddings.pt

@@ -18,3 +18,34 @@ stages:
     - path: data/users.csv
       md5: 5029d7659c0a76ecaf652a357fd0b828
       size: 175077
+  train:
+    cmd: python ./src/train.py ./data/
+    deps:
+    - path: ./data/news_processed.csv
+      md5: 6ab14bd0ab192fdab1a0d4412a7853f0
+      size: 462458
+    - path: ./data/ratings_processed.csv
+      md5: 111729ac7b2edd8d5d90cc5f78e10567
+      size: 1441893
+    - path: ./data/users_processed.csv
+      md5: 438a8d29316caf064cc33319fa214248
+      size: 348547
+    - path: ./src/model.py
+      md5: 5aa02447cafc567c9f50a3990d39f04b
+      size: 6974
+    - path: ./src/train.py
+      md5: 1efc3ff44a1a333b1557b225978160c1
+      size: 2933
+    outs:
+    - path: ./data/embeddings.pt
+      md5: 4b1c88f18741f1211c6c640323095b06
+      size: 3049519
+    - path: ./data/losses.png
+      md5: 7c546aa19b20de848d339a9fd3cca26e
+      size: 36599
+    - path: ./data/test_losses.csv
+      md5: eb21a2d18ceab618c6906233426156b7
+      size: 39
+    - path: ./data/train_losses.csv
+      md5: be70613516b050de0313aacefe574de0
+      size: 39
