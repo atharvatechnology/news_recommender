@@ -52,3 +52,24 @@ stages:
     - path: ./data/train_losses.csv
       md5: c3364784c8810879114fa1613944e7be
       size: 38
+  evaluate:
+    cmd: python ./src/evaluate.py ./data/ 7170
+    deps:
+    - path: ./data/embeddings.pt
+      md5: 9901fe14deaf817fc221b255850e413f
+      size: 3050415
+    - path: ./data/news_processed.csv
+      md5: 6ab14bd0ab192fdab1a0d4412a7853f0
+      size: 462458
+    - path: ./data/ratings_processed.csv
+      md5: 111729ac7b2edd8d5d90cc5f78e10567
+      size: 1441893
+    - path: ./data/users_processed.csv
+      md5: 438a8d29316caf064cc33319fa214248
+      size: 348547
+    - path: ./src/evaluate.py
+      md5: 7a5531a127044fe3c6fc569026e01fa2
+      size: 3248
+    - path: ./src/model.py
+      md5: 1698bf5a46b941bfccba4f3b826ad416
+      size: 7783

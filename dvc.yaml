@@ -23,3 +23,12 @@ stages:
     metrics:
     - ./data/metrics.json:
         cache: true
+  evaluate:
+    cmd: python ./src/evaluate.py ./data/ 7170
+    deps:
+    - ./data/embeddings.pt
+    - ./data/news_processed.csv
+    - ./data/ratings_processed.csv
+    - ./data/users_processed.csv
+    - ./src/evaluate.py
+    - ./src/model.py
