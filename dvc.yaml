@@ -20,3 +20,6 @@ stages:
     - ./data/losses.png
     - ./data/test_losses.csv
     - ./data/train_losses.csv
+    metrics:
+    - ./data/metrics.json:
+        cache: true
