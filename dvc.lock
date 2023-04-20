@@ -4,8 +4,8 @@ stages:
     cmd: python ./src/preprocess.py ./data/
     deps:
     - path: ./src/preprocess.py
-      md5: 06a2b4d40d47a7f7b041ff75d43683b9
-      size: 1854
+      md5: a4f778201ba398dd3595b648454e35f6
+      size: 2330
     - path: data/likes.csv
       md5: 95521a8fa42baaefdd6ea723aef4cb0a
       size: 516389
@@ -31,21 +31,24 @@ stages:
       md5: 438a8d29316caf064cc33319fa214248
       size: 348547
     - path: ./src/model.py
-      md5: 5aa02447cafc567c9f50a3990d39f04b
-      size: 6974
+      md5: 1698bf5a46b941bfccba4f3b826ad416
+      size: 7783
     - path: ./src/train.py
-      md5: 1efc3ff44a1a333b1557b225978160c1
-      size: 2933
+      md5: 3bf1fe50ffeff8e555025863fde582f9
+      size: 3466
     outs:
     - path: ./data/embeddings.pt
-      md5: 4b1c88f18741f1211c6c640323095b06
-      size: 3049519
+      md5: 9901fe14deaf817fc221b255850e413f
+      size: 3050415
     - path: ./data/losses.png
-      md5: 7c546aa19b20de848d339a9fd3cca26e
-      size: 36599
+      md5: ffd4a9e2c8a71b28f2f681685cab8dc1
+      size: 33389
+    - path: ./data/metrics.json
+      md5: d1458b4f97a953d62c4baedffa0da725
+      size: 177
     - path: ./data/test_losses.csv
-      md5: eb21a2d18ceab618c6906233426156b7
+      md5: 5cc5a10cde0824d4075d2861c3b58e4d
       size: 39
     - path: ./data/train_losses.csv
-      md5: be70613516b050de0313aacefe574de0
-      size: 39
+      md5: c3364784c8810879114fa1613944e7be
+      size: 38
