@@ -1,8 +1,9 @@
+import json
 from os import path
 import sys
 
 import pandas as pd
-from model import build_model, train_with_regularization, test
+from model import build_model, train_with_regularization, test, compute_scores
 from matplotlib import pyplot as plt
 import torch
 import time
@@ -54,6 +55,19 @@ def run_training_session(
         test_losses_df = pd.DataFrame(test_losses)
         train_losses_df.to_csv(get_file_path("train_losses.csv"))
         test_losses_df.to_csv(get_file_path("test_losses.csv"))
+        # compute metrics
+        scores = compute_scores(model, A_test)
+        # save metrics to json
+        metrics = {
+            "train_loss": train_losses[-1].astype(float).item(),
+            "test_loss": test_losses[-1].astype(float).item(),
+            "mse": float(scores[0]),
+            "mae": float(scores[1]),
+            "r2": float(scores[2]),
+            "max_error": float(scores[3]),
+        }
+        # print(type(metrics["max_error"]))
+        json.dump(metrics, open(get_file_path("metrics.json"), "w"))
 
 
 if __name__ == "__main__":

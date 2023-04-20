@@ -1,4 +1,5 @@
 import torch
+from sklearn.metrics import mean_absolute_error, mean_squared_error, max_error, r2_score
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -141,6 +142,35 @@ def test(model: torch.nn.Module, rating_mat, optimizer):
         # print(pred.shape)
         loss = sparse_mean_square_error(rating_mat.values(), pred)
     return loss
+
+
+def compute_scores(model, rating_mat):
+    """Compute scores for the model.
+
+    Parameters
+    ----------
+    model : torch.nn.Module
+        CF model
+    rating_mat : sparse matrix with ratings
+        sparse rating matrix of dense shape [N, M]
+
+    Returns
+    -------
+    tuple
+        MSE, MAE, R2, Max Error
+    """
+    model.eval()
+    with torch.no_grad():
+        pred = model.forward(rating_mat)
+        # print(pred.shape)
+        pred = pred.detach().cpu().numpy()
+    actual_val = rating_mat.values().detach().cpu().numpy()
+    return (
+        mean_squared_error(actual_val, pred),
+        mean_absolute_error(actual_val, pred),
+        r2_score(actual_val, pred),
+        max_error(actual_val, pred),
+    )
 
 
 def build_model(ratings, users_df, news_df, embedding_dim=3, init_stddev=1.0):
