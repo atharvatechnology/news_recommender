@@ -48,6 +48,12 @@ def run_training_session(
         ax.plot(iterations, test_losses, label="test_loss")
         ax.set_xlim([1, num_iterations])
         ax.legend()
+        fig.savefig(get_file_path("losses.png"))
+        # save train and test losses
+        train_losses_df = pd.DataFrame(train_losses)
+        test_losses_df = pd.DataFrame(test_losses)
+        train_losses_df.to_csv(get_file_path("train_losses.csv"))
+        test_losses_df.to_csv(get_file_path("test_losses.csv"))
 
 
 if __name__ == "__main__":
@@ -83,3 +89,4 @@ if __name__ == "__main__":
         plot_results=True,
     )
     print(f"\ncompleted in {(time.time() - start)}")
+    torch.save({"embedding_dict": model.embeddings}, get_file_path("embeddings.pt"))
