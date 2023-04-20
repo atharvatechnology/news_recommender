@@ -2,10 +2,15 @@ import os
 import sys
 import pandas as pd
 import numpy as np
+import torch
 
 
 DOT = "dot"
 COSINE = "cosine"
+
+
+def get_file_path(file_name):
+    return os.path.join(DATA_PATH, file_name)
 
 
 def compute_scores(query_embedding, item_embeddings, measure=DOT):
@@ -28,10 +33,12 @@ def compute_scores(query_embedding, item_embeddings, measure=DOT):
     return scores
 
 
-def user_recommendations(model, measure=DOT, exclude_rated=False, k=6, user_id=7170):
+def user_recommendations(
+    embeddings, measure=DOT, exclude_rated=False, k=6, user_id=7170
+):
     # user_id = 7170
     scores = compute_scores(
-        model.embeddings["user_embed"][user_id], model.embeddings["item_embed"], measure
+        embeddings["user_embed"][user_id], embeddings["item_embed"], measure
     )
     score_key = measure + " score"
     df = pd.DataFrame(
@@ -49,7 +56,7 @@ def user_recommendations(model, measure=DOT, exclude_rated=False, k=6, user_id=7
     print(df.sort_values([score_key], ascending=False).head(k))
 
 
-def item_neighbors(model, title_substring, measure=DOT, k=6, item_id=2399):
+def item_neighbors(embeddings, title_substring, measure=DOT, k=6, item_id=2399):
     # Search for item ids that match the given substring
     ids = news_df[news_df["Title"].str.contains(title_substring)].index.values
     titles = news_df.iloc[ids]["Title"].values
@@ -68,7 +75,7 @@ def item_neighbors(model, title_substring, measure=DOT, k=6, item_id=2399):
 
     # item_id = 2399
     scores = compute_scores(
-        model.embeddings["item_embed"][item_id], model.embeddings["item_embed"], measure
+        embeddings["item_embed"][item_id], embeddings["item_embed"], measure
     )
     score_key = measure + " score"
     df = pd.DataFrame(
@@ -83,6 +90,11 @@ def item_neighbors(model, title_substring, measure=DOT, k=6, item_id=2399):
 
 if __name__ == "__main__":
     DATA_PATH = os.path.abspath(sys.argv[1])
+    USER_ID = int(sys.argv[2])
 
-    news_df = pd.read_csv(DATA_PATH("news.csv"))
-    ratings_df = pd.read_csv(DATA_PATH("ratings.csv"))
+    news_df = pd.read_csv(get_file_path("news_processed.csv"))
+    ratings_df = pd.read_csv(get_file_path("ratings_processed.csv"))
+
+    embeddings = torch.load(get_file_path("embeddings.pt"))["embedding_dict"]
+
+    print(user_recommendations(embeddings, measure=COSINE, user_id=USER_ID))
