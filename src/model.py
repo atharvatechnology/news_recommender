@@ -24,6 +24,8 @@ def build_rating_sparse_tensor(ratings_df, users_df, items_df):
     """
     Args:
       ratings_df: a pd.DataFrame with `user_id`, `news_id` and `rating` columns.
+      users_df: a pd.DataFrame with user data
+      items_df: a pd.DataFrame with news data
     Returns:
       A tf.SparseTensor representing the ratings matrix.
     """
