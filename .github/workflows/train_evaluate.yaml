@@ -1,5 +1,5 @@
 name: model-training-evaluate
-# on: [push]
+on: [push]
 jobs:
   run:
     runs-on: [ubuntu-latest]
@@ -26,8 +26,6 @@ jobs:
           dvc metrics diff master --show-md >> report.md
 
           # Publish confusion matrix diff
-          echo -e "## Plots\n### ROC Curve" >> report.md
-          cml-publish ./results/roc_curve.png --md >> report.md
-          echo -e "\n### Precision and Recall Curve" >> report.md
-          cml-publish ./results/precision_recall_curve.png --md >> report.md
+          echo -e "## Plots\n### Loss Curve" >> report.md
+          cml-publish ./data/losses.png --md >> report.md
           cml-send-comment report.md
