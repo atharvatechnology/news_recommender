@@ -4,8 +4,8 @@ stages:
     cmd: python ./src/preprocess.py ./data/
     deps:
     - path: ./src/preprocess.py
-      md5: a4f778201ba398dd3595b648454e35f6
-      size: 2330
+      md5: b663cf0e9cf4eff52b600a4fdde63b3e
+      size: 2436
     - path: data/likes.csv
       md5: 95521a8fa42baaefdd6ea723aef4cb0a
       size: 516389
@@ -31,33 +31,33 @@ stages:
       md5: 438a8d29316caf064cc33319fa214248
       size: 348547
     - path: ./src/model.py
-      md5: 1698bf5a46b941bfccba4f3b826ad416
-      size: 7783
+      md5: ddf396d22cbca599837b52a836a01328
+      size: 7785
     - path: ./src/train.py
-      md5: 3bf1fe50ffeff8e555025863fde582f9
-      size: 3466
+      md5: 8ec888dc9b94444649bc78a12cd71f3f
+      size: 3468
     outs:
     - path: ./data/embeddings.pt
-      md5: 9901fe14deaf817fc221b255850e413f
-      size: 3050415
+      md5: d3d17a5206fdf12c793def1b29b3d33c
+      size: 3050351
     - path: ./data/losses.png
-      md5: ffd4a9e2c8a71b28f2f681685cab8dc1
-      size: 33389
+      md5: 51411e92cea923e53524d990fb2407ff
+      size: 28456
     - path: ./data/metrics.json
-      md5: d1458b4f97a953d62c4baedffa0da725
+      md5: c853837a1d88bac7e3793ce97b2d6be3
       size: 177
     - path: ./data/test_losses.csv
-      md5: 5cc5a10cde0824d4075d2861c3b58e4d
+      md5: ea78f5c6707b9818f4ca24199417e980
       size: 39
     - path: ./data/train_losses.csv
-      md5: c3364784c8810879114fa1613944e7be
+      md5: cb4562285947caddcdaf2cb9bf4b436a
       size: 38
   evaluate:
     cmd: python ./src/evaluate.py ./data/ 7170
     deps:
     - path: ./data/embeddings.pt
-      md5: 9901fe14deaf817fc221b255850e413f
-      size: 3050415
+      md5: d3d17a5206fdf12c793def1b29b3d33c
+      size: 3050351
     - path: ./data/news_processed.csv
       md5: 6ab14bd0ab192fdab1a0d4412a7853f0
       size: 462458
@@ -68,8 +68,8 @@ stages:
       md5: 438a8d29316caf064cc33319fa214248
       size: 348547
     - path: ./src/evaluate.py
-      md5: 7a5531a127044fe3c6fc569026e01fa2
-      size: 3248
+      md5: a99fbacfc1ab3d1253be2362276890e1
+      size: 3252
     - path: ./src/model.py
-      md5: 1698bf5a46b941bfccba4f3b826ad416
-      size: 7783
+      md5: 71387728ef741d7547af76c6dc3fb694
+      size: 7494
