@@ -144,8 +144,8 @@ def test(model: torch.nn.Module, rating_mat, optimizer):
     return loss
 
 
-def compute_scores(model, rating_mat):
-    """Compute scores for the model.
+def compute_metrics(model, rating_mat):
+    """Compute metrics for the model.
 
     Parameters
     ----------
@@ -203,19 +203,6 @@ def build_model(ratings, users_df, news_df, embedding_dim=3, init_stddev=1.0):
         A_train,
         A_test,
     )
-
-
-def gravity(U, V):
-    """Creates a gravity loss given two embedding matrices."""
-    return (
-        1.0
-        / (U.shape[0] * V.shape[0])
-        * torch.sum(torch.matmul(U.T, U) * torch.matmul(V.T, V))
-    )
-
-
-def get_square_norm(X):
-    return (1.0 / X.shape[0]) * torch.sum(X * X)
 
 
 def gravity(U, V):
