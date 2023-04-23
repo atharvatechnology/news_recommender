@@ -3,8 +3,12 @@ import numpy as np
 import pandas as pd
 from os import path
 
+DATA_PATH = None
 
-def get_file_path(file_name):
+
+def get_file_path(file_name, data_dir="data"):
+    if DATA_PATH is None:
+        return path.join(data_dir, file_name)
     return path.join(DATA_PATH, file_name)
 
 

@@ -3,12 +3,9 @@
 # Example Tests
 
 import pytest
+from ..preprocess import get_file_path
 
 
-def capital_case(x):
-    return x.capitalize()
-
-
-def test_capital_case():
-    assert capital_case("semaphore") == "Semaphore"
-
+def test_get_file_path():
+    DATA_PATH = "data"
+    assert get_file_path("users.csv") == "data/users.csv"
