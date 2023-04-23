@@ -1,5 +1,5 @@
 name: model-training-evaluate
-# on: [push]
+on: [push]
 jobs:
   run:
     runs-on: [ubuntu-latest]
@@ -18,16 +18,14 @@ jobs:
 
           # Pull data & run-cache from S3 and reproduce pipeline
           dvc pull --run-cache
-          dvc repro
+          dvc repro train evaluate
 
           # Report metrics
           echo "## Metrics" >> report.md
-          git fetch --prune
+          # git fetch --prune
           dvc metrics diff master --show-md >> report.md
 
           # Publish confusion matrix diff
-          echo -e "## Plots\n### ROC Curve" >> report.md
-          cml-publish ./results/roc_curve.png --md >> report.md
-          echo -e "\n### Precision and Recall Curve" >> report.md
-          cml-publish ./results/precision_recall_curve.png --md >> report.md
+          echo -e "## Plots\n### Loss Curve" >> report.md
+          cml-publish ./data/losses.png --md >> report.md
           cml-send-comment report.md
