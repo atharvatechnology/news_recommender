@@ -98,7 +98,7 @@ if __name__ == "__main__":
         model,
         train=train_with_regularization,
         test=test,
-        num_iterations=20,
+        num_iterations=2000,
         learning_rate=5.0,
         plot_results=True,
     )
