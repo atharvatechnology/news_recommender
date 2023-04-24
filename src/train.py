@@ -3,7 +3,7 @@ from os import path
 import sys
 
 import pandas as pd
-from model import build_model, train_with_regularization, test, compute_metrics
+from model import build_model, train_with_regularization, test, compute_metrics, train
 from matplotlib import pyplot as plt
 import torch
 import time
@@ -96,7 +96,8 @@ if __name__ == "__main__":
         A_train,
         A_test,
         model,
-        train=train_with_regularization,
+        # train=train_with_regularization,
+        train= train,
         test=test,
         num_iterations=2000,
         learning_rate=5.0,
