@@ -8,8 +8,12 @@ import torch
 DOT = "dot"
 COSINE = "cosine"
 
+DATA_PATH = None
 
-def get_file_path(file_name):
+
+def get_file_path(file_name, data_dir="data"):
+    if DATA_PATH is None:
+        return os.path.join(data_dir, file_name)
     return os.path.join(DATA_PATH, file_name)
 
 
@@ -34,7 +38,7 @@ def compute_scores(query_embedding, item_embeddings, measure=DOT):
 
 
 def user_recommendations(
-    embeddings, measure=DOT, exclude_rated=False, k=6, user_id=7170
+    embeddings, news_df, ratings_df, measure=DOT, exclude_rated=False, k=6, user_id=7170
 ):
     # user_id = 7170
     scores = compute_scores(
@@ -53,7 +57,9 @@ def user_recommendations(
         # remove the items that are already rated
         rated_items = ratings_df[ratings_df.user_id == user_id]["news_id"].values
         df = df[df.item_id.apply(lambda item_id: item_id not in rated_items)]
-    print(df.sort_values([score_key], ascending=False).head(k))
+    k_rec_df = df.sort_values([score_key], ascending=False).head(k)
+    # send only item ids
+    return k_rec_df["item_id"].values.tolist()
 
 
 def item_neighbors(embeddings, title_substring, measure=DOT, k=6, item_id=2399):
@@ -97,4 +103,8 @@ if __name__ == "__main__":
 
     embeddings = torch.load(get_file_path("embeddings.pt"))["embedding_dict"]
 
-    print(user_recommendations(embeddings, measure=COSINE, user_id=USER_ID))
+    print(
+        user_recommendations(
+            embeddings, news_df, ratings_df, measure=COSINE, user_id=USER_ID
+        )
+    )
