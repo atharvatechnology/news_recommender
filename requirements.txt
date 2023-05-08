@@ -9,3 +9,4 @@ pytest
 pytest-dependency
 pre-commit
 torch
+grpcio-tools~=1.48
