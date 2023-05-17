@@ -28,14 +28,18 @@ class Recommender(NewsRecommendationServiceServicer):
         recs = user_recommendations(
             self.embeddings, self.news_df, self.ratings_df, user_id=user_id
         )
+        # TODO: Delete this line later
+        recs = [90, 91]
         return GetNewsRecommendationResponse(newsIds=recs)
 
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     add_NewsRecommendationServiceServicer_to_server(Recommender(), server)
-    server.add_insecure_port("[::]:50051")
+    PORT = 50052
+    server.add_insecure_port(f"[::]:{PORT}")
     server.start()
+    print(f"Recommendation grpc server started on port {PORT}")
     server.wait_for_termination()
 
 
