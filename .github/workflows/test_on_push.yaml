@@ -1,6 +1,9 @@
 name: Python Package and Test
 
-on: [push]
+on: [
+  push, 
+  pull_request
+]
 
 jobs:
   build:
