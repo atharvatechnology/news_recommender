@@ -46,18 +46,22 @@ RUN apt-get update \
     && apt-get install gcc -y \
     && apt-get clean
 
+COPY . $APP_HOME
+
 COPY --from=builder /usr/src/app/wheels /wheels
 COPY --from=builder /usr/src/app/requirements.txt .
+COPY --from=builder /usr/src/app/proto ./src/proto
 
 RUN pip install --no-cache /wheels/*
 
 # generate proto buffer files
-RUN python -m grpc_tools.protoc -I ./proto/ --python_out=./proto/ --grpc_python_out=./proto/ ./proto/recommendation.proto
+RUN python -m grpc_tools.protoc -I ./src/proto/ --python_out=./src/proto/ --grpc_python_out=./src/proto/ ./src/proto/recommendation.proto
 
-COPY . $APP_HOME
+# COPY . $APP_HOME
+# RUN cp -r proto/* src/proto/
 
-EXPOSE 50052
-ENTRYPOINT ["python", "src/grpc_server.py"]
+# EXPOSE 50052
+ENTRYPOINT ["python", "./src/serve_grpc.py"]
 
 
 
