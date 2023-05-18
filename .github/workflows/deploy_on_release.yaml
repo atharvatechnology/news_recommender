@@ -17,7 +17,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs: 
       image_tag: ${{ steps.meta.outputs.tags }}
-      json_tag: ${{ steps.meta.outputs.json_tag }}
 
     steps:
       - name: Checkout
@@ -36,7 +35,7 @@ jobs:
       
       - name: Get meta info
         id: meta
-        uses: docker/meta-action@v3
+        uses: docker/metadata-action@v3
         with:
           images: ${{ steps.login-ecr.outputs.registry }}/${{ env.IMAGE_NAME }}
           tags: |
@@ -51,7 +50,7 @@ jobs:
           echo "::set-output name=json_tag::\"${{ steps.meta.outputs.tags }}\""
       
       - name: Push image to Amazon ECR
-        id: build-image
+        id: push-image
         env:
           # ECR_REGISTRY: ${{  steps.login-ecr.outputs.registry }}
           # ECR_REPOSITORY: ${{ github.repository }}
