@@ -45,7 +45,8 @@ jobs:
         id: build-image
         run: |
           echo "image name: ${{ steps.meta.outputs.tags }}"
-          docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.tags }} .
+          echo "*******img: ${{ env.IMAGE_NAME }}"
+          docker build -t ${{ steps.meta.outputs.tags }} .
           echo "::set-output name=tags::${{ steps.meta.outputs.tags }}"
           echo "::set-output name=json_tag::\"${{ steps.meta.outputs.tags }}\""
       
