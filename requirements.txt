@@ -1,8 +1,5 @@
-scikit-learn>=0.23
 pandas
-seaborn
 matplotlib
-joblib
 numpy
 pyyaml
 pytest
