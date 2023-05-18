@@ -1,36 +1,68 @@
 name: model-deploy-on-release
 on:
-  release:
-    types: 
-      - 'created'
+  # release:
+  #   types: 
+  #     - 'created'
+  push:
+    branches:
+      - master
+# build and push docker image to ECR
+env:
+  REGION: ap-southeast-1
+  IMAGE_NAME: ${{ github.repository}}
 
 jobs:
-  run:
-    runs-on: [ubuntu-latest]
-    container: docker://dvcorg/cml-py3:latest
+  build_and_push:
+    name: Build and Push docker image to ECR
+    runs-on: ubuntu-latest
+    outputs: 
+      image_tag: ${{ steps.meta.outputs.tags }}
+      json_tag: ${{ steps.meta.outputs.json_tag }}
+
     steps:
-      - uses: actions/checkout@v2
-      - name: 'Deploy/Update on new release'
-        shell: bash
+      - name: Checkout
+        uses: actions/checkout@v3
 
-        env:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          CRED_SECRET: ${{ secrets.IBM_CREDENTIALS_PASS }}
-        
+      - name: Configure Aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      
+      - name: Get meta info
+        id: meta
+        uses: docker/meta-action@v3
+        with:
+          images: ${{ steps.login-ecr.outputs.registry }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=sha
+
+      - name: Build docker image
+        id: build-image
         run: |
-          # Install requirements
-          pip install -r requirements.txt
+          echo "image name: ${{ steps.meta.outputs.tags }}"
+          docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.tags }} .
+          echo "::set-output name=tags::${{ steps.meta.outputs.tags }}"
+          echo "::set-output name=json_tag::\"${{ steps.meta.outputs.tags }}\""
+      
+      - name: Push image to Amazon ECR
+        id: build-image
+        env:
+          # ECR_REGISTRY: ${{  steps.login-ecr.outputs.registry }}
+          # ECR_REPOSITORY: ${{ github.repository }}
+          IMAGE_NAME: ${{ steps.meta.outputs.tags }}
+        run: |
+          # push image to ECR so that it can
+          # be deployed to ECS.
+          docker push $IMAGE_NAME
+          # echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          # echo "::set-output name=tag::$IMAGE_TAG"
+          # echo "::set-output name=json_tag::\"$IMAGE_TAG\""
 
-          # Pull data & run-cache from S3 and reproduce pipeline
-          dvc pull --run-cache
-          dvc repro
-
-          # Decrypt credentials file
-          gpg --quiet --batch --yes --decrypt --passphrase="$CRED_SECRET" --output credentials.yaml credentials.yaml.gpg
-
-          # Check if there is a deployment already, if positive update it, otherwise deploys it for the first time
-          ./src/scripts/Scripts/git_release_pipeline.sh 
 
             
