@@ -1,7 +1,11 @@
 name: model-training-evaluate
-on: [
-  # push
-  ]
+on:
+  release:
+    types: 
+      - 'created'
+  # push:
+  #   branches:
+      # - master
 jobs:
   run:
     runs-on: [ubuntu-latest]
