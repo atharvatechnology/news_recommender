@@ -49,7 +49,10 @@ RUN apt-get update \
 COPY . $APP_HOME
 
 COPY --from=builder /usr/src/app/wheels /wheels
+# https://stackoverflow.com/questions/51115856/docker-failed-to-export-image-failed-to-create-image-failed-to-get-layer
+RUN true
 COPY --from=builder /usr/src/app/requirements.txt .
+RUN true
 COPY --from=builder /usr/src/app/proto ./src/proto
 
 RUN pip install --no-cache /wheels/*
