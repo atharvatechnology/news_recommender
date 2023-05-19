@@ -9,7 +9,7 @@ on:
 # build and push docker image to ECR
 env:
   REGION: ap-southeast-1
-  IMAGE_NAME: ${{ github.repository}}
+  IMAGE_NAME: news_recommender
 
 jobs:
   build_and_push:
@@ -47,19 +47,17 @@ jobs:
           echo "image name: ${{ steps.meta.outputs.tags }}"
           echo "*******img: ${{ env.IMAGE_NAME }}"
           docker build -t ${{ steps.meta.outputs.tags }} .
-          echo "::set-output name=tags::${{ steps.meta.outputs.tags }}"
-          echo "::set-output name=json_tag::\"${{ steps.meta.outputs.tags }}\""
+          # echo "::set-output name=tags::${{ steps.meta.outputs.tags }}"
+          # echo "::set-output name=json_tag::\"${{ steps.meta.outputs.tags }}\""
       
       - name: Push image to Amazon ECR
         id: push-image
         env:
-          # ECR_REGISTRY: ${{  steps.login-ecr.outputs.registry }}
-          # ECR_REPOSITORY: ${{ github.repository }}
-          IMAGE_NAME: ${{ steps.meta.outputs.tags }}
+          IMAGE_URL: ${{ steps.meta.outputs.tags }}
         run: |
           # push image to ECR so that it can
           # be deployed to ECS.
-          docker push $IMAGE_NAME
+          docker push $IMAGE_URL
           # echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
           # echo "::set-output name=tag::$IMAGE_TAG"
           # echo "::set-output name=json_tag::\"$IMAGE_TAG\""
