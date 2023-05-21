@@ -3,9 +3,9 @@ on:
   # release:
   #   types: 
   #     - 'created'
-  push:
-    branches:
-      - master
+  # push:
+  #   branches:
+  #     - master
 # build and push docker image to ECR
 env:
   REGION: ap-southeast-1
