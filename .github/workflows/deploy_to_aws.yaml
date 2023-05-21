@@ -1,0 +1,79 @@
+name: CI/CD to aws
+
+on:
+  push:
+    branches: [ master ]
+#   release:
+#     types: [published]
+#     tags:
+#       - 'v*'
+
+#   workflow_dispatch:
+#     inputs:
+#       version:
+#         description: "Version"
+#         required: true
+
+
+jobs:
+  build_and_push:
+    name: Build and push Docker Image
+    runs-on: ubuntu-latest
+    outputs:
+      img_tag: ${{steps.meta.outputs.tags}}
+      json_tag: ${{steps.meta.outputs.json}}
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@v3
+
+      - name: Login to ghcr
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata for docker
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: ghcr.io/atharvatechnology/ronbBackendDjango
+          tags: |
+            type=semver,pattern={{version}}
+            # minimal (short sha)
+            type=sha
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+#   deploy:
+#     name: Deploy to Amazon EC2 instance
+#     runs-on: ubuntu-latest
+#     needs: build_and_push
+
+#     steps:
+#       - name: Deploy to aws EC2 instance via SSH action
+#         uses: appleboy/ssh-action@v0.1.3
+#         env:
+#             TAG: ${{fromJSON(needs.build_and_push.outputs.json_tag).tags[0]}}
+#         with:
+#           host: ${{ secrets.SSH_HOST }}
+#           username: ${{ secrets.USERNAME }}
+#           key: ${{ secrets.SSH_KEY }}
+#           envs: IMAGE_NAME,REGISTRY,{{ secrets.DIGITALOCEAN_ACCESS_TOKEN }},GITHUB_SHA,TAG
+#           script: |
+#             cd ronb-platform
+#             export RECOMMENDER_TAG=$(echo $TAG)
+#             echo RECOMMENDER_IMAGE=$RECOMMENDER_TAG > .env.recommender
+#             cat .env.django .env.nestimg .env.dashboard .env.newscache .env.recommender > .env
+#             docker compose up -d recommender
