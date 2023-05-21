@@ -61,24 +61,24 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-#   deploy:
-#     name: Deploy to Amazon EC2 instance
-#     runs-on: ubuntu-latest
-#     needs: build_and_push
+  deploy:
+    name: Deploy to Amazon EC2 instance
+    runs-on: ubuntu-latest
+    needs: build_and_push
 
-#     steps:
-#       - name: Deploy to aws EC2 instance via SSH action
-#         uses: appleboy/ssh-action@v0.1.3
-#         env:
-#             TAG: ${{fromJSON(needs.build_and_push.outputs.json_tag).tags[0]}}
-#         with:
-#           host: ${{ secrets.SSH_HOST }}
-#           username: ${{ secrets.USERNAME }}
-#           key: ${{ secrets.SSH_KEY }}
-#           envs: IMAGE_NAME,REGISTRY,{{ secrets.DIGITALOCEAN_ACCESS_TOKEN }},GITHUB_SHA,TAG
-#           script: |
-#             cd ronb-platform
-#             export RECOMMENDER_TAG=$(echo $TAG)
-#             echo RECOMMENDER_IMAGE=$RECOMMENDER_TAG > .env.recommender
-#             cat .env.django .env.nestimg .env.dashboard .env.newscache .env.recommender > .env
-#             docker compose up -d recommender
+    steps:
+      - name: Deploy to aws EC2 instance via SSH action
+        uses: appleboy/ssh-action@v0.1.3
+        env:
+            TAG: ${{fromJSON(needs.build_and_push.outputs.json_tag).tags[0]}}
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          envs: IMAGE_NAME,REGISTRY,{{ secrets.DIGITALOCEAN_ACCESS_TOKEN }},GITHUB_SHA,TAG
+          script: |
+            cd ronb-platform
+            export RECOMMENDER_TAG=$(echo $TAG)
+            echo RECOMMENDER_IMAGE=$RECOMMENDER_TAG > .env.recommender
+            cat .env.django .env.nestimg .env.dashboard .env.newscache .env.recommender > .env
+            docker compose up -d recommender
