@@ -1,8 +1,8 @@
 name: model-deploy-on-release
-# on:
-  # release:
-  #   types: 
-  #     - 'created'
+on:
+  release:
+    types: 
+      - 'created'
   # push:
   #   branches:
   #     - master
