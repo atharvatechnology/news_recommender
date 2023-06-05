@@ -63,3 +63,4 @@ logs/
 
 # ignore the proto files
 proto/
+data/categories.csv
