@@ -35,8 +35,7 @@ jobs:
           dvc repro -f preprocess
           # python ./src/train.py ./data/
           # python ./src/evaluate.py ./data/ 7170
-          dvc repro -f train
-          dvc repro -f evaluate
+          dvc repro -f train evaluate
           git config --global user.name 'shovan777'
           git config --global user.email 'raj.shrestha778@gmail.com'
           git add .
