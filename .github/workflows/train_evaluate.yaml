@@ -18,6 +18,8 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           REC_AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           REC_AWS_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           REC_AWS_REGION: ap-southeast-1
           REC_BUCKET_NAME: news-recommender
           MEDIA_ROOT: uploads-live
