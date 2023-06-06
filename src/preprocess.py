@@ -1,7 +1,9 @@
+import os
 import sys
 import numpy as np
 import pandas as pd
 from os import path
+import boto3
 
 DATA_PATH = None
 
@@ -52,7 +54,9 @@ def preprocess_data():
     # currently, we use the number of likes and comments as the rating
     # the weightage of like and comment is 1:1
     # even if a user has multiple comments on a news, we only count it as 1
-    equal_weight_rating = lambda x: x.Like + (x.Comment + 1) / (x.Comment + 1)
+    def equal_weight_rating(x):
+        return x.Like + (x.Comment + 1) / (x.Comment + 1)
+
     ratings_df["rating"] = ratings_df[["Like", "Comment"]].apply(
         equal_weight_rating, axis=1
     )
@@ -64,8 +68,34 @@ def preprocess_data():
 
 
 if __name__ == "__main__":
+    from dotenv import load_dotenv
+
+    load_dotenv()
+
     print("Hello World!")
     DATA_PATH = path.abspath(sys.argv[1])
-    # data_root = 'data/'
+    s3 = boto3.client(
+        "s3",
+        region_name=os.environ["REC_AWS_REGION"],
+        aws_access_key_id=os.environ["REC_AWS_ACCESS_KEY_ID"],
+        aws_secret_access_key=os.environ["REC_AWS_ACCESS_KEY"],
+    )
+    filenames = [
+        "news.csv",
+        "categories.csv",
+        "likes.csv",
+        "ratings.csv",
+        "userInterest.csv",
+        "users.csv",
+    ]
+    bucket_dir = path.join(os.environ["MEDIA_ROOT"], "recommendation_data")
+    for filename in filenames:
+        filename_local = path.join(DATA_PATH, filename)
+        s3.download_file(
+            Filename=filename_local,
+            Bucket=os.environ["REC_BUCKET_NAME"],
+            Key=path.join(bucket_dir, filename),
+        )
+    # # data_root = 'data/'
     preprocess_data()
     print(f"Done! Data saved in {DATA_PATH}/<data>_processed.csv")
