@@ -8,4 +8,4 @@ pre-commit
 torch
 grpcio-tools~=1.48
 boto3
-dotenv
+python-dotenv
