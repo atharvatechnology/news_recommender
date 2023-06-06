@@ -24,7 +24,8 @@ jobs:
 
           # Pull data & run-cache from S3 and reproduce pipeline
           dvc pull --run-cache
-          dvc repro preprocess train evaluate
+          python ./src/preprocess.py ./data/
+          dvc repro train evaluate
 
           # Report metrics
           echo "## Metrics" >> report.md
