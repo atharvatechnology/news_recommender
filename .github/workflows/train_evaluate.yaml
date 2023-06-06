@@ -34,6 +34,7 @@ jobs:
           python ./src/evaluate.py ./data/ 7170
           git config --global user.name 'shovan777'
           git config --global user.email 'raj.shrestha778@gmail.com'
+          git add .
           git commit -am "Train model with new data"
           # dvc repro train evaluate
           dvc push
