@@ -1,11 +1,11 @@
 name: model-training-evaluate
 on:
-  release:
-    types: 
-      - 'created'
-  # push:
-  #   branches:
-      # - master
+  # release:
+  #   types: 
+  #     - 'created'
+  push:
+    branches:
+      - master
 jobs:
   run:
     runs-on: [ubuntu-latest]
@@ -24,7 +24,7 @@ jobs:
 
           # Pull data & run-cache from S3 and reproduce pipeline
           dvc pull --run-cache
-          dvc repro train evaluate
+          dvc repro preprocess train evaluate
 
           # Report metrics
           echo "## Metrics" >> report.md
