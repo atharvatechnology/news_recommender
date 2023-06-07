@@ -38,26 +38,26 @@ stages:
       size: 3518
     outs:
     - path: ./data/embeddings.pt
-      md5: 537956db817b7659980a026a5ec96ae3
-      size: 3717167
+      md5: 8eae04f4a2c5fe2c745b45031f88c7ef
+      size: 3708271
     - path: ./data/losses.png
-      md5: 6dc6cf1ba894b43233ed8a61afb49f0b
-      size: 36816
+      md5: 920b135966cc65a2e77204ee21c930d1
+      size: 37188
     - path: ./data/metrics.json
-      md5: 63ef86029ed41501e908615162e6a751
-      size: 183
+      md5: 683945518f9f138d99058eb528613685
+      size: 182
     - path: ./data/test_losses.csv
-      md5: f02598d72b1a6d87b549a2ba3518ca50
-      size: 2762
+      md5: dbd834b51b0d3a8c058d298810cf6a7e
+      size: 2764
     - path: ./data/train_losses.csv
-      md5: 7af7dc467f310fe6fe3bc147c2d104e9
-      size: 2794
+      md5: 61540fc00bf5cc37e14a72237e6f4fa8
+      size: 2792
   evaluate:
     cmd: python ./src/evaluate.py ./data/ 7170
     deps:
     - path: ./data/embeddings.pt
-      md5: 1b7c794f0ef4bedc550677645c940053
-      size: 3721775
+      md5: 8eae04f4a2c5fe2c745b45031f88c7ef
+      size: 3708271
     - path: ./data/news_processed.csv
       md5: 41f1e695d87b106e56aa7ec0a3b2f2ec
       size: 926683
