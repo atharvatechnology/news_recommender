@@ -34,30 +34,30 @@ stages:
       md5: 5e4b1b99882999c66c672d451c78244e
       size: 7586
     - path: ./src/train.py
-      md5: 0a8d008f4c270a45aa857a1841de9795
-      size: 3501
+      md5: ad1d0898236be8c235fecd4110b5ac60
+      size: 3499
     outs:
     - path: ./data/embeddings.pt
-      md5: 19d76f8c86bf979cb05d0b07e892e4a2
-      size: 3748911
+      md5: 3c35d1f9c2edc65a464c52b45c2b8fa0
+      size: 3722991
     - path: ./data/losses.png
-      md5: ce990bc044e0265decefc2f66adc3094
-      size: 37637
+      md5: 567b59f0b9c945d8437dd2033dccff05
+      size: 41169
     - path: ./data/metrics.json
-      md5: fdd0704f1d718c5ce33ceac84fbba97c
-      size: 182
+      md5: f0d9414a5a9238c95c49f50992a7dfc2
+      size: 176
     - path: ./data/test_losses.csv
-      md5: 270653e3bf6656c3560215c70d6558d8
-      size: 2770
+      md5: 8c7792c604d55ad9baa8c71f377224fb
+      size: 131
     - path: ./data/train_losses.csv
-      md5: f9a07828e806bd9dd5552d755e479025
-      size: 2803
+      md5: 5d905f09be3dd06f3b2c44f0e0c43691
+      size: 130
   evaluate:
     cmd: python ./src/evaluate.py ./data/ 7170
     deps:
     - path: ./data/embeddings.pt
-      md5: 19d76f8c86bf979cb05d0b07e892e4a2
-      size: 3748911
+      md5: 3c35d1f9c2edc65a464c52b45c2b8fa0
+      size: 3722991
     - path: ./data/news_processed.csv
       md5: 41f1e695d87b106e56aa7ec0a3b2f2ec
       size: 926683
