@@ -56,6 +56,7 @@ RUN true
 COPY --from=builder /usr/src/app/proto ./src/proto
 
 RUN pip install --no-cache /wheels/*
+RUN pip install dvc[s3]
 
 # generate proto buffer files
 RUN python -m grpc_tools.protoc -I ./src/proto/ --python_out=./src/proto/ --grpc_python_out=./src/proto/ ./src/proto/recommendation.proto
