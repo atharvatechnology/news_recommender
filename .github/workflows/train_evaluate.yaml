@@ -3,14 +3,14 @@ on:
   # release:
   #   types: 
   #     - 'created'
-  # push:
-  #   branches:
-  #     - master
-  pull_request:
+  push:
     branches:
       - master
-    types:
-      - closed
+  # pull_request:
+  #   branches:
+  #     - master
+  #   types:
+  #     - closed
 permissions:
   contents: write
 jobs:
@@ -60,6 +60,7 @@ jobs:
           cml-send-comment report.md
           # cml comment update report.md --target=pr
           git commit -am "Train model with new data"
+          git push
           dvc push
 
 
