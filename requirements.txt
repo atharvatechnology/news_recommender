@@ -10,3 +10,4 @@ torch
 grpcio-tools~=1.48
 boto3
 python-dotenv
+dvc[s3]
