@@ -97,10 +97,10 @@ if __name__ == "__main__":
         A_test,
         model,
         # train=train_with_regularization,
-        train=train,
+        train=train_with_regularization,
         test=test,
         num_iterations=2000,
-        learning_rate=0.05,
+        learning_rate=5,
         plot_results=True,
     )
     print(f"\ncompleted in {(time.time() - start)}")

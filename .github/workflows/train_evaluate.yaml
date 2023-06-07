@@ -59,7 +59,7 @@ jobs:
           cml-publish ./data/losses.png --md >> report.md
           cml-send-comment report.md
           # # cml comment update report.md --target=pr
-          git commit -am "Train model with new data"
+          git commit -am "Train model with new data."
           git push
           dvc push
 
