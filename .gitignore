@@ -62,6 +62,7 @@ target/
 logs/
 
 # ignore the proto files
-proto/
+src/proto/**pb**
+src/proto/*.proto
 data/categories.csv
 .env
