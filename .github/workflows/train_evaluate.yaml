@@ -39,9 +39,9 @@ jobs:
           git config --global user.name 'shovan777'
           git config --global user.email 'raj.shrestha778@gmail.com'
           git add .
-          git commit -am "Train model with new data"
+          # git commit -am "Train model with new data"
           # dvc repro train evaluate
-          dvc push
+          # dvc push
 
           # Report metrics
           echo "## Metrics" >> report.md
@@ -52,3 +52,7 @@ jobs:
           echo -e "## Plots\n### Loss Curve" >> report.md
           cml-publish ./data/losses.png --md >> report.md
           cml-send-comment report.md
+          git commit -am "Train model with new data"
+          dvc push
+
+
