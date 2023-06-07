@@ -58,7 +58,7 @@ jobs:
           echo -e "## Plots\n### Loss Curve" >> report.md
           cml-publish ./data/losses.png --md >> report.md
           cml-send-comment report.md
-          # cml comment update report.md --target=pr
+          # # cml comment update report.md --target=pr
           git commit -am "Train model with new data"
           git push
           dvc push
