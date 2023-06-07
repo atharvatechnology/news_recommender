@@ -99,8 +99,8 @@ if __name__ == "__main__":
         # train=train_with_regularization,
         train=train,
         test=test,
-        num_iterations=100,
-        learning_rate=5.0,
+        num_iterations=2000,
+        learning_rate=0.05,
         plot_results=True,
     )
     print(f"\ncompleted in {(time.time() - start)}")
