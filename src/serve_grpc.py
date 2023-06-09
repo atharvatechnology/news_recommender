@@ -27,7 +27,7 @@ class Recommender(NewsRecommendationServiceServicer):
         user_id = request.userId
         print(f"*****Received request for user {user_id}")
         recs = user_recommendations(
-            self.embeddings, self.news_df, self.ratings_df, user_id=user_id, k=20
+            self.embeddings, self.news_df, self.ratings_df, user_id=user_id, k=200
         )
         # # TODO: Delete this line later
         # recs = [i for i in range(1, 21)]
