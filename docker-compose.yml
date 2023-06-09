@@ -6,3 +6,5 @@ services:
       context: .
     ports: 
       - 50052:50052
+    env_file:
+      - .env.recommender

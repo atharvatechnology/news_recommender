@@ -65,8 +65,11 @@ RUN python -m grpc_tools.protoc -I ./src/proto/ --python_out=./src/proto/ --grpc
 # RUN cp -r proto/* src/proto/
 
 # EXPOSE 50052
-ENTRYPOINT ["python", "./src/serve_grpc.py"]
+# ENTRYPOINT ["python", "./src/serve_grpc.py"]
+RUN chown 777 /home/app/web/entrypoint.sh
+RUN chmod +x /home/app/web/entrypoint.sh
 
+ENTRYPOINT [ "/home/app/web/entrypoint.sh" ]
 
 
 
