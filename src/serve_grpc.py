@@ -30,7 +30,7 @@ class Recommender(NewsRecommendationServiceServicer):
             self.embeddings, self.news_df, self.ratings_df, user_id=user_id, k=20
         )
         # # TODO: Delete this line later
-        recs = [i for i in range(1, 21)]
+        # recs = [i for i in range(1, 21)]
         return GetNewsRecommendationResponse(newsIds=recs)
 
 
