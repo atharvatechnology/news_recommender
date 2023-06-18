@@ -1,0 +1,18 @@
+name: collect data
+on:
+  schedule:
+    - cron: "0 0 * * 5"
+permissions:
+  contents: write
+jobs:
+  run:
+    # if: ${{github.event.pull_request.merged}}
+    runs-on: [ubuntu-latest]
+    container: docker://dvcorg/cml-py3:latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: 'Collect latest data'
+        shell: bash
+        run: |
+          curl https://0bgp9to429.execute-api.ap-southeast-1.amazonaws.com/dev/rec
