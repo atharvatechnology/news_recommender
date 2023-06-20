@@ -1,7 +1,7 @@
 name: collect data
 on:
   schedule:
-    - cron: "0 0 * * 5"
+    - cron: "30 2 * * 2"
 permissions:
   contents: write
 jobs:
